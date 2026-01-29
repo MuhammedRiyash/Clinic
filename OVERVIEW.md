@@ -55,25 +55,28 @@ The financial engine driving your revenue charts.
 
 ---
 
-## 🛠️ How to Get Started
+## 🏁 Vercel Deployment Guide (Monorepo)
 
-### Prerequisites
-- Node.js (v18+)
-- A MySQL or PostgreSQL database
+Since this is a monorepo (Frontend + Backend), you should deploy them as **two separate projects** in Vercel:
 
-### Installation
-1.  **Clone & Install**:
-    ```bash
-    # Root directory
-    npm run install-all # Custom script if available
-    ```
-2.  **Database Configuration**:
-    Update `backend/.env` with your `DATABASE_URL` and `JWT_SECRET`.
-3.  **Run Development Environment**:
-    ```bash
-    # Run both simultaneously (if configured)
-    npm run dev
-    ```
+### 1. Backend API Deployment
+- **Project Name**: `clinic-api`
+- **Root Directory**: `backend`
+- **Build Command**: `npm run build` (This generates Prisma)
+- **Environment Variables**: `DATABASE_URL`, `JWT_SECRET`, `NODE_ENV=production`
+
+### 2. Frontend UI Deployment
+- **Project Name**: `clinic-ui`
+- **Root Directory**: `frontend`
+- **Build Command**: `npm run build`
+- **Environment Variables**: 
+  - `VITE_API_URL`: `https://your-clinic-api.vercel.app/api`
+  - `VITE_IMAGE_HOST`: `https://your-clinic-api.vercel.app`
+
+---
+
+> [!TIP]
+> **Fixing the 404**: If you see a 404, it's likely because Vercel is trying to deploy the "Root" folder. Go to **Settings > General** in Vercel and set the **Root Directory** to `frontend` or `backend` respectively.
 
 ---
 
