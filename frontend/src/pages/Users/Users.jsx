@@ -26,7 +26,7 @@ const Users = () => {
     const renderRow = (user) => (
         <>
             <td className={styles.nameCell}>
-                <img src={user.imagePath ? `${import.meta.env.VITE_IMAGE_HOST || 'http://localhost:5000'}${user.imagePath}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`} alt={user.name} />
+                <img src={user.imagePath ? `${import.meta.env.VITE_IMAGE_HOST || ''}${user.imagePath}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`} alt={user.name} />
                 <span>{user.name}</span>
             </td>
             <td>{user.email}</td>

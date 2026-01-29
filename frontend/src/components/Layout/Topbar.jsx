@@ -20,7 +20,7 @@ const Topbar = () => {
                 <button className={styles.iconBtn} onClick={logout} title="Logout"><LogOut size={20} /></button>
 
                 <div className={styles.userProfile}>
-                    <img src={user?.imagePath ? `${import.meta.env.VITE_IMAGE_HOST || 'http://localhost:5000'}${user.imagePath}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=random`} alt="User" />
+                    <img src={user?.imagePath ? `${import.meta.env.VITE_IMAGE_HOST || ''}${user.imagePath}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=random`} alt="User" />
                     <div className={styles.userInfo}>
                         <span className={styles.userName}>{user?.name || 'Dhanush'}</span>
                         <span className={styles.userStatus}><span className={styles.onlineDot}></span> {user?.role || 'Online'}</span>

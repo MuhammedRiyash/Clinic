@@ -42,7 +42,7 @@ const DoctorTable = ({ doctors, onEdit, onDelete, onStatusToggle }) => {
                             <td><input type="checkbox" /> {(index + 1).toString().padStart(2, '0')}</td>
                             <td className={styles.nameCell}>
                                 <img
-                                    src={doctor.imagePath ? `${import.meta.env.VITE_IMAGE_HOST || 'http://localhost:5000'}${doctor.imagePath}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random`}
+                                    src={doctor.imagePath ? `${import.meta.env.VITE_IMAGE_HOST || ''}${doctor.imagePath}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random`}
                                     alt={doctor.name}
                                     onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random`; }}
                                 />
