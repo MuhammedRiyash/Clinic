@@ -24,12 +24,12 @@
         },
         {
             "source": "/(.*)",
-            "destination": "frontend/dist/$1",
+            "destination": "/$1",
             "check": true
         },
         {
             "source": "/(.*)",
-            "destination": "frontend/dist/index.html"
+            "destination": "/index.html"
         }
     ]
 }
