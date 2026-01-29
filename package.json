@@ -1,8 +1,8 @@
 {
     "name": "tectra-clinic",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": true,
     "scripts": {
-        "build": "npm install --prefix backend && npm run build --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
+        "build": "cd frontend && npm install && npm run build"
     }
 }
