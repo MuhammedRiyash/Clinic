@@ -5,7 +5,7 @@
     "installCommand": "cd backend && npm install && npx prisma generate",
     "functions": {
         "backend/src/index.js": {
-            "runtime": "@vercel/node@3"
+            "includeFiles": "backend/**"
         }
     },
     "rewrites": [
