@@ -1,0 +1,59 @@
+.card {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.moreBtn {
+  color: var(--text-muted);
+}
+
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #28a745;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.trendIcon {
+  stroke-width: 3;
+}
+
+.miniChart {
+  height: 30px;
+}
+
+.sparkline {
+  width: 100%;
+  height: 100%;
+}

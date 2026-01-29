@@ -1,0 +1,60 @@
+.container {
+    padding: 24px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1E293B;
+}
+
+.header h1 span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #64748B;
+}
+
+.addBtn {
+    padding: 10px 20px;
+    background: #2F818E;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.nameCell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nameCell img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.roleBadge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin { background: #EEF2FF; color: #4338CA; }
+.doctor { background: #ECFDF5; color: #059669; }
+.staff { background: #F8FAFB; color: #64748B; }
+
+.activeStatus {
+    color: #059669;
+    font-weight: 500;
+}

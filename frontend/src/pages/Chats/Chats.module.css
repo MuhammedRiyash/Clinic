@@ -1,0 +1,135 @@
+.chatContainer {
+    display: flex;
+    height: calc(100vh - 120px);
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 320px;
+    border-right: 1px solid #F1F5F9;
+    display: flex;
+    flex-direction: column;
+}
+
+.search {
+    padding: 20px;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.search input {
+    width: 100%;
+    padding: 10px;
+    background: #F8FAFB;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+.contactList {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.contactItem {
+    display: flex;
+    padding: 16px 20px;
+    gap: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.contactItem:hover { background: #F8FAFB; }
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #E5F6F8;
+    color: #2F818E;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.onlineDot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: #10B981;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+.contactInfo h4 { margin: 0; font-size: 14px; }
+.contactInfo p { margin: 4px 0 0; font-size: 12px; color: #64748B; font-weight: 400; }
+
+.mainChat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatHeader {
+    padding: 16px 24px;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.chatHeader h4 { margin: 0; }
+.chatHeader span { font-size: 12px; color: #64748B; }
+
+.messages {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.received {
+    align-self: flex-start;
+    background: #F1F5F9;
+    color: #1E293B;
+}
+
+.sent {
+    align-self: flex-end;
+    background: #2F818E;
+    color: white;
+}
+
+.inputArea {
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid #F1F5F9;
+}
+
+.inputArea input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    outline: none;
+}
+
+.inputArea button {
+    background: #2F818E;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 44px;
+    cursor: pointer;
+}

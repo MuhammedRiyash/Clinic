@@ -1,0 +1,79 @@
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+.logo {
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.logo img {
+  height: 80px;
+  width: 260px;
+}
+
+.nav {
+  padding: 0 12px 24px;
+}
+
+.group {
+  margin-top: 24px;
+}
+
+.groupTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  padding-left: 12px;
+}
+
+.nav ul li {
+  margin-bottom: 4px;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #555555;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav a:hover {
+  background-color: rgba(47, 129, 142, 0.05);
+  color: var(--primary-color);
+}
+
+.nav a.active {
+  background-color: #E6F3F5;
+  color: var(--primary-color);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  flex: 1;
+}

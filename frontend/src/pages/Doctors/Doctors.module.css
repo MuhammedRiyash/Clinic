@@ -1,0 +1,38 @@
+.doctorsPage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleInfo h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.titleInfo p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.addBtn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.addBtn:hover {
+  opacity: 0.9;
+}

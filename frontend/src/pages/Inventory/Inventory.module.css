@@ -1,0 +1,32 @@
+.container {
+    padding: 24px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1E293B;
+}
+
+.header h1 span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #64748B;
+}
+
+.addBtn {
+    padding: 10px 20px;
+    background: #2F818E;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}

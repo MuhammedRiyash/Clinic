@@ -1,0 +1,79 @@
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.tableHeader h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1E293B;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  background: #F8FAFB;
+  padding: 8px 12px;
+  border-radius: 8px;
+  gap: 8px;
+  color: #94A3B8;
+}
+
+.searchBox input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 200px;
+}
+
+.filterBox {
+  display: flex;
+  align-items: center;
+  background: #F8FAFB;
+  padding: 8px 12px;
+  border-radius: 8px;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748B;
+  cursor: pointer;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748B;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.table td {
+  padding: 12px;
+  font-size: 14px;
+  color: #475569;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.table tr:hover {
+  background: #F8FAFB;
+}

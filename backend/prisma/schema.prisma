@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("Staff") // Admin, Staff, Doctor
+  imagePath String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Doctor {
+  id           String        @id @default(uuid())
+  name         String
+  specialty    String
+  dob          DateTime
+  email        String        @unique
+  phone        String
+  status       String        @default("Active")
+  imagePath    String?
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Patient {
+  id           String        @id @default(uuid())
+  name         String
+  dob          DateTime
+  gender       String
+  email        String        @unique
+  phone        String
+  address      String?
+  bloodGroup   String?
+  appointments Appointment[]
+  billings     Billing[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Appointment {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  doctorId        String
+  doctor          Doctor   @relation(fields: [doctorId], references: [id])
+  appointmentDate DateTime
+  status          String   @default("Scheduled") // Scheduled, Completed, Cancelled
+  reason          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Inventory {
+  id          String   @id @default(uuid())
+  itemName    String
+  category    String   // Medicine, Equipment, Supplies
+  quantity    Int
+  unitPrice   Float
+  expiryDate  DateTime?
+  supplier    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Insurance {
+  id            String   @id @default(uuid())
+  policyNumber  String   @unique
+  providerName  String
+  coverageType  String
+  patientId     String?
+  validUntil    DateTime
+  status        String   @default("Active")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  name        String
+  category    String   // Medical, Dental
+  description String?
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Billing {
+  id            String   @id @default(uuid())
+  patientId     String
+  patient       Patient  @relation(fields: [patientId], references: [id])
+  amount        Float
+  status        String   @default("Unpaid") // Paid, Unpaid, Partially Paid
+  paymentMethod String?  // Cash, Card, Insurance
+  invoiceDate   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  content    String   @db.Text
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
