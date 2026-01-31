@@ -6,15 +6,26 @@ const prisma = new PrismaClient();
 // GET all patients
 router.get('/', async (req, res, next) => {
   try {
-    const { search } = req.query;
-    const patients = await prisma.patient.findMany({
-      where: search ? {
-        OR: [
-          { name: { contains: search } },
-          { email: { contains: search } },
-          { phone: { contains: search } }
+    const { search, gender } = req.query;
+    let where = {};
+    
+    if (search || gender) {
+      where = {
+        AND: [
+          search ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { email: { contains: search, mode: 'insensitive' } },
+              { phone: { contains: search, mode: 'insensitive' } }
+            ]
+          } : {},
+          gender && gender !== 'All' ? { gender: gender } : {}
         ]
-      } : {},
+      };
+    }
+
+    const patients = await prisma.patient.findMany({
+      where,
       orderBy: { createdAt: 'desc' }
     });
     res.json(patients);
@@ -32,6 +43,16 @@ router.post('/', async (req, res, next) => {
     const newPatient = await prisma.patient.create({
       data: data
     });
+
+    // Trigger Notification
+    await prisma.notification.create({
+      data: {
+        title: 'New Patient Registered',
+        message: `${newPatient.name} has been added to the system.`,
+        type: 'success'
+      }
+    });
+
     res.status(201).json(newPatient);
   } catch (err) {
     next(err);

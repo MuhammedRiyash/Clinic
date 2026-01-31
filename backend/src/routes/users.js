@@ -19,7 +19,25 @@ const userSchema = z.object({
 // GET all (Admin only)
 router.get('/', auth, adminOnly, async (req, res, next) => {
   try {
+    const { search, role } = req.query;
+    let where = {};
+    
+    if (search || role) {
+      where = {
+        AND: [
+          search ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { email: { contains: search, mode: 'insensitive' } }
+            ]
+          } : {},
+          role && role !== 'All' ? { role: role } : {}
+        ]
+      };
+    }
+
     const users = await prisma.user.findMany({
+      where,
       select: { id: true, name: true, email: true, role: true, imagePath: true, createdAt: true }
     });
     res.json(users);

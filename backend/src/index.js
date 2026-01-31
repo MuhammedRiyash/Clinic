@@ -14,6 +14,8 @@ const servicesRoutes = require('./routes/services');
 const analyticsRoutes = require('./routes/analytics');
 const telemedicineRoutes = require('./routes/telemedicine');
 const notificationRoutes = require('./routes/notifications');
+const messageRoutes = require('./routes/messages');
+const insuranceRoutes = require('./routes/insurance');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -47,6 +49,8 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/telemedicine', telemedicineRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/insurance', insuranceRoutes);
 
 // Health Check
 app.get('/health', (req, res) => {

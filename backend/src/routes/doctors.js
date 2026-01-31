@@ -21,7 +21,27 @@ const doctorSchema = z.object({
 // GET all doctors
 router.get('/', async (req, res, next) => {
   try {
+    const { search, specialty } = req.query;
+    
+    let where = {};
+    
+    if (search || specialty) {
+      where = {
+        AND: [
+          search ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { specialty: { contains: search, mode: 'insensitive' } },
+              { email: { contains: search, mode: 'insensitive' } }
+            ]
+          } : {},
+          specialty && specialty !== 'All' ? { specialty: specialty } : {}
+        ]
+      };
+    }
+
     const doctors = await prisma.doctor.findMany({
+      where,
       orderBy: { createdAt: 'desc' }
     });
     res.json(doctors);

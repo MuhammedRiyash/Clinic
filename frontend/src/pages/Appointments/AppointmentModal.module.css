@@ -12,12 +12,13 @@
 }
 
 .modal {
-  background-color: white;
+  background-color: var(--bg-card);
   border-radius: 12px;
   width: 600px;
   max-width: 90%;
   padding: 32px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .modalHeader {
@@ -30,6 +31,7 @@
 .modalHeader h2 {
   font-size: 20px;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .closeBtn {
@@ -54,15 +56,18 @@
 .inputGroup label {
   font-size: 14px;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .inputGroup input, .inputGroup select, .inputGroup textarea {
   padding: 10px 14px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
+  outline: none;
 }
 
 .row {
@@ -82,9 +87,9 @@
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
-  color: #64748B;
-  background-color: #f8f9fa;
-  border: none;
+  color: var(--text-secondary);
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   cursor: pointer;
 }
 

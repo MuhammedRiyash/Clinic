@@ -14,7 +14,7 @@ const Telemedicine = () => {
         setLoading(true);
         try {
             const res = await api.get('/telemedicine');
-            setSessions(res.data);
+            setSessions(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error('Error fetching telemedicine sessions:', err);
         } finally {
@@ -27,13 +27,9 @@ const Telemedicine = () => {
     }, []);
 
     const handleSave = async (formData) => {
-        try {
-            await api.post('/telemedicine', formData);
-            setIsModalOpen(false);
-            fetchSessions();
-        } catch (err) {
-            console.error('Error creating session:', err);
-        }
+        await api.post('/telemedicine', formData);
+        setIsModalOpen(false);
+        fetchSessions();
     };
 
     const columns = ['Patient Name', 'Doctor', 'Scheduled Time', 'Status', 'Action'];

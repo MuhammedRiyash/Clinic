@@ -1,30 +1,41 @@
 .chatContainer {
     display: flex;
     height: calc(100vh - 120px);
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .sidebar {
     width: 320px;
-    border-right: 1px solid #F1F5F9;
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
 }
 
 .search {
     padding: 20px;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 32px;
+    color: var(--text-muted);
 }
 
 .search input {
     width: 100%;
-    padding: 10px;
-    background: #F8FAFB;
-    border: none;
+    padding: 10px 10px 10px 38px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     outline: none;
+    color: var(--text-primary);
 }
 
 .contactList {
@@ -38,9 +49,17 @@
     gap: 12px;
     cursor: pointer;
     transition: background 0.2s;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.contactItem:hover { background: #F8FAFB; }
+.contactItem:hover { 
+    background: var(--bg-color); 
+}
+
+.contactItem.active {
+    background: rgba(47, 129, 142, 0.1);
+    border-left: 4px solid var(--primary-color);
+}
 
 .avatar {
     width: 40px;
@@ -52,35 +71,49 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
 }
 
-.onlineDot {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 10px;
-    height: 10px;
-    background: #10B981;
-    border: 2px solid white;
-    border-radius: 50%;
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.contactInfo h4 { margin: 0; font-size: 14px; }
-.contactInfo p { margin: 4px 0 0; font-size: 12px; color: #64748B; font-weight: 400; }
+.contactInfo h4 { 
+    margin: 0; 
+    font-size: 14px; 
+    color: var(--text-primary);
+}
+
+.contactInfo p { 
+    margin: 4px 0 0; 
+    font-size: 12px; 
+    color: var(--text-secondary); 
+}
 
 .mainChat {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: var(--bg-color);
 }
 
 .chatHeader {
     padding: 16px 24px;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-card);
 }
 
-.chatHeader h4 { margin: 0; }
-.chatHeader span { font-size: 12px; color: #64748B; }
+.headerInfo h4 { 
+    margin: 0; 
+    color: var(--text-primary);
+}
+
+.headerInfo span { 
+    font-size: 12px; 
+    color: var(--text-secondary); 
+}
 
 .messages {
     flex: 1;
@@ -93,43 +126,93 @@
 
 .message {
     max-width: 70%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-size: 14px;
+    display: flex;
+    flex-direction: column;
 }
 
 .received {
     align-self: flex-start;
-    background: #F1F5F9;
-    color: #1E293B;
 }
 
 .sent {
     align-self: flex-end;
-    background: #2F818E;
+}
+
+.bubble {
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    position: relative;
+}
+
+.received .bubble {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-top-left-radius: 2px;
+}
+
+.sent .bubble {
+    background: var(--primary-color);
     color: white;
+    border-top-right-radius: 2px;
+}
+
+.time {
+    font-size: 10px;
+    margin-top: 4px;
+    opacity: 0.7;
+    display: block;
+    text-align: right;
 }
 
 .inputArea {
     padding: 20px;
     display: flex;
     gap: 12px;
-    border-top: 1px solid #F1F5F9;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-card);
 }
 
 .inputArea input {
     flex: 1;
     padding: 12px;
-    border: 1px solid #E2E8F0;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     outline: none;
+    color: var(--text-primary);
 }
 
 .inputArea button {
-    background: #2F818E;
+    background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
     width: 44px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputArea button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.noChat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    gap: 16px;
+}
+
+.empty {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-secondary);
 }

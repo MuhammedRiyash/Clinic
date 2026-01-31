@@ -6,7 +6,25 @@ const prisma = new PrismaClient();
 // GET all services
 router.get('/', async (req, res, next) => {
   try {
+    const { category, search } = req.query;
+    let where = {};
+    
+    if (category || search) {
+      where = {
+        AND: [
+          category && category !== 'All' ? { category: category } : {},
+          search ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { description: { contains: search, mode: 'insensitive' } }
+            ]
+          } : {}
+        ]
+      };
+    }
+
     const services = await prisma.service.findMany({
+      where,
       orderBy: { name: 'asc' }
     });
     res.json(services);

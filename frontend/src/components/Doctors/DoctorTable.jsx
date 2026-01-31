@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './DoctorTable.module.css';
-import { MoreVertical, Search, Filter, ChevronDown } from 'lucide-react';
+import { MoreVertical, Search, Filter, ChevronDown, Pencil, Trash2, CalendarClock } from 'lucide-react';
 
-const DoctorTable = ({ doctors, onEdit, onDelete, onStatusToggle }) => {
+const DoctorTable = ({ doctors, onEdit, onDelete, onStatusToggle, onSearch, onFilterChange, currentFilter }) => {
     return (
         <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
@@ -10,15 +10,34 @@ const DoctorTable = ({ doctors, onEdit, onDelete, onStatusToggle }) => {
                 <div className={styles.controls}>
                     <div className={styles.searchBox}>
                         <Search size={16} />
-                        <input type="text" placeholder="Search..." />
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            onChange={(e) => onSearch?.(e.target.value)}
+                        />
                     </div>
                     <div className={styles.filterBox}>
-                        <span>Heart Surgeon</span>
-                        <ChevronDown size={16} />
+                        <Filter size={16} />
+                        <select
+                            value={currentFilter}
+                            onChange={(e) => onFilterChange?.(e.target.value)}
+                        >
+                            <option value="All">All Specialties</option>
+                            <option value="Cardiologist">Cardiologist</option>
+                            <option value="Neurologist">Neurologist</option>
+                            <option value="Pediatrician">Pediatrician</option>
+                            <option value="Dental Surgeon">Dental Surgeon</option>
+                            <option value="Heart Surgeon">Heart Surgeon</option>
+                            <option value="Neurosurgeon">Neurosurgeon</option>
+                        </select>
                     </div>
                     <div className={styles.timeBox}>
-                        <span>Last 12 Months</span>
-                        <ChevronDown size={16} />
+                        <CalendarClock size={16} />
+                        <select>
+                            <option>Last 12 Months</option>
+                            <option>Last 30 Days</option>
+                            <option>Last 7 Days</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -52,15 +71,24 @@ const DoctorTable = ({ doctors, onEdit, onDelete, onStatusToggle }) => {
                             <td>{new Date(doctor.dob).toLocaleDateString()}</td>
                             <td>{doctor.email}</td>
                             <td>
-                                <span className={`${styles.statusBadge} ${styles[doctor.status.toLowerCase()]}`}>
+                                <span
+                                    className={`${styles.statusBadge} ${styles[doctor.status.toLowerCase()]}`}
+                                    onClick={() => onStatusToggle?.(doctor.id, doctor.status)}
+                                    style={{ cursor: 'pointer' }}
+                                    title="Click to toggle status"
+                                >
                                     {doctor.status}
                                 </span>
                             </td>
                             <td>{doctor.phone}</td>
                             <td>
                                 <div className={styles.actions}>
-                                    <button className={styles.editBtn} onClick={() => onEdit(doctor)}>Edit</button>
-                                    <button className={styles.deleteBtn} onClick={() => onDelete(doctor.id)}>Delete</button>
+                                    <button className={styles.editBtn} onClick={() => onEdit(doctor)} title="Edit Doctor">
+                                        <Pencil size={16} />
+                                    </button>
+                                    <button className={styles.deleteBtn} onClick={() => onDelete(doctor.id)} title="Delete Doctor">
+                                        <Trash2 size={16} />
+                                    </button>
                                 </div>
                             </td>
                         </tr>

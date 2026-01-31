@@ -12,12 +12,13 @@
 }
 
 .modal {
-  background-color: white;
+  background-color: var(--bg-card);
   border-radius: 12px;
   width: 500px;
   max-width: 90%;
   padding: 32px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .modalHeader {
@@ -30,6 +31,7 @@
 .modalHeader h2 {
   font-size: 20px;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .closeBtn {
@@ -54,14 +56,23 @@
 .inputGroup label {
   font-size: 14px;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .inputGroup input, .inputGroup select, .inputGroup textarea {
   padding: 10px 14px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
   border-radius: 8px;
   font-size: 14px;
+  outline: none;
+}
+
+.helperText {
+  font-size: 11px;
+  color: #94A3B8;
+  margin-top: 4px;
 }
 
 .footer {
@@ -75,9 +86,9 @@
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
-  color: #64748B;
-  background-color: #f8f9fa;
-  border: none;
+  color: var(--text-secondary);
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   cursor: pointer;
 }
 
@@ -89,4 +100,25 @@
   background-color: #2F818E;
   border: none;
   cursor: pointer;
+}
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.errorMsg {
+  background-color: #FEF2F2;
+  color: #EF4444;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #64748B;
+  font-size: 14px;
 }

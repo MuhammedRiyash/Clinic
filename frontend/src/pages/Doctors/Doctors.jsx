@@ -5,15 +5,22 @@ import DoctorTable from '../../components/Doctors/DoctorTable';
 import DoctorModal from './DoctorModal';
 import { Plus } from 'lucide-react';
 
+import { useDebounce } from '../../hooks/useDebounce';
+
 const Doctors = () => {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingDoctor, setEditingDoctor] = useState(null);
+    const [search, setSearch] = useState('');
+    const [specialty, setSpecialty] = useState('All');
+    const debouncedSearch = useDebounce(search, 500);
 
-    const fetchDoctors = async () => {
+    const fetchDoctors = async (query = '', spec = 'All') => {
         try {
-            const res = await api.get('/doctors');
+            let url = `/doctors?search=${query}`;
+            if (spec && spec !== 'All') url += `&specialty=${spec}`;
+            const res = await api.get(url);
             setDoctors(res.data);
         } catch (err) {
             console.error('Error fetching doctors:', err);
@@ -23,8 +30,8 @@ const Doctors = () => {
     };
 
     useEffect(() => {
-        fetchDoctors();
-    }, []);
+        fetchDoctors(debouncedSearch, specialty);
+    }, [debouncedSearch, specialty]);
 
     const handleCreate = () => {
         setEditingDoctor(null);
@@ -100,6 +107,9 @@ const Doctors = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onStatusToggle={handleStatusToggle}
+                onSearch={setSearch}
+                onFilterChange={setSpecialty}
+                currentFilter={specialty}
             />
 
             {isModalOpen && (

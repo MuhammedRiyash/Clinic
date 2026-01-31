@@ -6,7 +6,24 @@ const prisma = new PrismaClient();
 // GET all billing with relations
 router.get('/', async (req, res, next) => {
   try {
+    const { search, status } = req.query;
+    let where = {};
+    
+    if (search || status) {
+      where = {
+        AND: [
+          search ? {
+            OR: [
+              { patient: { name: { contains: search, mode: 'insensitive' } } }
+            ]
+          } : {},
+          status && status !== 'All' ? { status: status } : {}
+        ]
+      };
+    }
+
     const billings = await prisma.billing.findMany({
+      where,
       include: {
         patient: { select: { name: true } }
       },
@@ -25,8 +42,19 @@ router.post('/', async (req, res, next) => {
     if (data.invoiceDate) data.invoiceDate = new Date(data.invoiceDate);
 
     const newBilling = await prisma.billing.create({
-      data: data
+      data: data,
+      include: { patient: { select: { name: true } } }
     });
+
+    // Trigger Notification
+    await prisma.notification.create({
+      data: {
+        title: 'New Billing Generated',
+        message: `Invoice created for ${newBilling.patient.name} - Amount: ₹${newBilling.amount}.`,
+        type: 'warning'
+      }
+    });
+
     res.status(201).json(newBilling);
   } catch (err) {
     next(err);

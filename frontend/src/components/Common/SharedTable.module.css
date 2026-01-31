@@ -1,8 +1,9 @@
 .tableContainer {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .tableHeader {
@@ -15,7 +16,7 @@
 .tableHeader h2 {
   font-size: 18px;
   font-weight: 600;
-  color: #1E293B;
+  color: var(--text-primary);
 }
 
 .controls {
@@ -23,14 +24,20 @@
   gap: 12px;
 }
 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 .searchBox {
   display: flex;
   align-items: center;
-  background: #F8FAFB;
+  background: var(--bg-subtle);
   padding: 8px 12px;
   border-radius: 8px;
   gap: 8px;
-  color: #94A3B8;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
 }
 
 .searchBox input {
@@ -39,23 +46,40 @@
   outline: none;
   font-size: 14px;
   width: 200px;
+  color: var(--text-primary);
 }
 
 .filterBox {
   display: flex;
   align-items: center;
-  background: #F8FAFB;
-  padding: 8px 12px;
+  background: var(--bg-subtle);
+  padding: 0 12px;
   border-radius: 8px;
   gap: 8px;
   font-size: 14px;
-  color: #64748B;
-  cursor: pointer;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
-.table {
+.filterSelect {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.filterSelect option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.tableWrapper {
+  overflow-x: auto;
   width: 100%;
-  border-collapse: collapse;
 }
 
 .table th {
@@ -63,17 +87,17 @@
   padding: 12px;
   font-size: 13px;
   font-weight: 600;
-  color: #64748B;
-  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .table td {
   padding: 12px;
   font-size: 14px;
-  color: #475569;
-  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .table tr:hover {
-  background: #F8FAFB;
+  background: var(--bg-color);
 }

@@ -17,7 +17,7 @@ import {
     Settings
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ onSettingsClick }) => {
     const menuItems = [
         {
             section: 'OVERVIEW', items: [
@@ -59,13 +59,23 @@ const Sidebar = () => {
                         <ul>
                             {group.items.map((item) => (
                                 <li key={item.name}>
-                                    <NavLink
-                                        to={item.path}
-                                        className={({ isActive }) => isActive ? styles.active : ''}
-                                    >
-                                        <span className={styles.icon}>{item.icon}</span>
-                                        <span className={styles.name}>{item.name}</span>
-                                    </NavLink>
+                                    {item.name === 'Settings' ? (
+                                        <button
+                                            className={styles.navBtn}
+                                            onClick={onSettingsClick}
+                                        >
+                                            <span className={styles.icon}>{item.icon}</span>
+                                            <span className={styles.name}>{item.name}</span>
+                                        </button>
+                                    ) : (
+                                        <NavLink
+                                            to={item.path}
+                                            className={({ isActive }) => isActive ? styles.active : ''}
+                                        >
+                                            <span className={styles.icon}>{item.icon}</span>
+                                            <span className={styles.name}>{item.name}</span>
+                                        </NavLink>
+                                    )}
                                 </li>
                             ))}
                         </ul>

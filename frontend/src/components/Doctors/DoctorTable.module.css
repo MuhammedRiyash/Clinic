@@ -1,5 +1,5 @@
 .tableContainer {
-  background-color: #FFFFFF;
+  background-color: var(--bg-card);
   border-radius: 12px;
   padding: 24px;
   box-shadow: var(--card-shadow);
@@ -27,18 +27,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #F8F9FA;
+  background-color: var(--bg-subtle);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
-.searchBox input {
+.searchBox input, .filterBox select, .timeBox select {
   border: none;
   background: none;
-  width: 120px;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+}
+
+.filterBox select option, .timeBox select option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .table {
@@ -53,15 +60,16 @@
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
-  background-color: #F8F9FA;
+  background-color: var(--bg-subtle);
   white-space: nowrap;
 }
 
 .table td {
   padding: 16px;
   font-size: 14px;
-  border-bottom: 1px solid #F1F3F5;
+  border-bottom: 1px solid var(--border-color);
   vertical-align: middle;
+  color: var(--text-main);
 }
 
 .nameCell {
@@ -69,7 +77,7 @@
   align-items: center;
   gap: 12px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .nameCell img {
@@ -100,32 +108,28 @@
   gap: 8px;
 }
 
-.editBtn {
-  padding: 6px 12px;
-  background-color: #E6F3F5;
-  color: #2F818E;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
+.editBtn, .deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
   cursor: pointer;
-}
-
-.deleteBtn {
-  padding: 6px 12px;
-  background-color: #FEEBEB;
-  color: #DC3545;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .editBtn:hover {
-  background-color: #d1ecf1;
+  background: var(--bg-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .deleteBtn:hover {
-  background-color: #f8d7da;
+  background: #FEF2F2;
+  color: #EF4444;
+  border-color: #EF4444;
 }

@@ -24,10 +24,10 @@ router.get('/', auth, async (req, res, next) => {
 // CREATE a new telemedicine session
 router.post('/', auth, async (req, res, next) => {
   try {
-    const { patientId, doctorId, appointmentDate, reason } = req.body;
+    const { patientId, doctorId, appointmentDate, reason, meetingLink } = req.body;
     
-    // Generate a dummy meeting link for now
-    const meetingLink = `https://meet.tectraclinic.com/${Math.random().toString(36).substring(7)}`;
+    // Generate a dummy meeting link if not provided
+    const finalMeetingLink = meetingLink || `https://meet.tectraclinic.com/${Math.random().toString(36).substring(7)}`;
 
     const appointment = await prisma.appointment.create({
       data: {
@@ -36,12 +36,21 @@ router.post('/', auth, async (req, res, next) => {
         appointmentDate: new Date(appointmentDate),
         reason,
         type: 'Telemedicine',
-        meetingLink,
+        meetingLink: finalMeetingLink,
         status: 'Scheduled'
       },
       include: {
         patient: { select: { name: true } },
         doctor: { select: { name: true } }
+      }
+    });
+
+    // Trigger Notification
+    await prisma.notification.create({
+      data: {
+        title: 'New Virtual Session',
+        message: `Telemedicine session scheduled with ${appointment.patient.name} for ${new Date(appointment.appointmentDate).toLocaleString()}.`,
+        type: 'info'
       }
     });
 

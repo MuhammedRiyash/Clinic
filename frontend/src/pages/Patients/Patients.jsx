@@ -3,8 +3,8 @@ import api from '../../services/api';
 import SharedTable from '../../components/Common/SharedTable';
 import PatientModal from './PatientModal';
 import styles from './Patients.module.css';
-
 import { useDebounce } from '../../hooks/useDebounce';
+import { Pencil, Trash2 } from 'lucide-react';
 
 const Patients = () => {
     const [patients, setPatients] = useState([]);
@@ -12,11 +12,14 @@ const Patients = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingPatient, setEditingPatient] = useState(null);
     const [search, setSearch] = useState('');
+    const [gender, setGender] = useState('All');
     const debouncedSearch = useDebounce(search, 500);
 
-    const fetchPatients = async (query = '') => {
+    const fetchPatients = async (query = '', gen = 'All') => {
         try {
-            const res = await api.get(`/patients?search=${query}`);
+            let url = `/patients?search=${query}`;
+            if (gen && gen !== 'All') url += `&gender=${gen}`;
+            const res = await api.get(url);
             setPatients(res.data);
         } catch (err) {
             console.error('Error fetching patients:', err);
@@ -26,8 +29,8 @@ const Patients = () => {
     };
 
     useEffect(() => {
-        fetchPatients(debouncedSearch);
-    }, [debouncedSearch]);
+        fetchPatients(debouncedSearch, gender);
+    }, [debouncedSearch, gender]);
 
     const handleCreate = () => {
         setEditingPatient(null);
@@ -78,8 +81,14 @@ const Patients = () => {
             <td>{patient.bloodGroup}</td>
             <td>{patient.phone}</td>
             <td>
-                <button className={styles.editBtn} onClick={() => handleEdit(patient)}>Edit</button>
-                <button className={styles.deleteBtn} onClick={() => handleDelete(patient.id)}>Delete</button>
+                <div className={styles.actions}>
+                    <button className={styles.editBtn} onClick={() => handleEdit(patient)} title="Edit Patient">
+                        <Pencil size={16} />
+                    </button>
+                    <button className={styles.deleteBtn} onClick={() => handleDelete(patient.id)} title="Delete Patient Record">
+                        <Trash2 size={16} />
+                    </button>
+                </div>
             </td>
         </>
     );
@@ -99,6 +108,14 @@ const Patients = () => {
                 data={patients}
                 renderRow={renderRow}
                 onSearch={setSearch}
+                filterOptions={[
+                    { value: 'All', label: 'All Genders' },
+                    { value: 'Male', label: 'Male' },
+                    { value: 'Female', label: 'Female' },
+                    { value: 'Other', label: 'Other' }
+                ]}
+                onFilterChange={setGender}
+                currentFilter={gender}
             />
 
             {isModalOpen && (

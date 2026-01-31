@@ -7,7 +7,7 @@
 .header h1 {
   font-size: 24px;
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .header h1 span {
@@ -29,7 +29,7 @@
 
 .chartCard {
   flex: 2;
-  background-color: #FFFFFF;
+  background-color: var(--bg-card);
   border-radius: 12px;
   padding: 24px;
   box-shadow: var(--card-shadow);
@@ -37,7 +37,7 @@
 
 .chartCardSmall {
   flex: 1;
-  background-color: #FFFFFF;
+  background-color: var(--bg-card);
   border-radius: 12px;
   padding: 24px;
   box-shadow: var(--card-shadow);
@@ -55,18 +55,18 @@
 .headerLeft h3 {
   font-size: 18px;
   font-weight: 700;
-  color: #1E293B;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .headerLeft p {
   font-size: 13px;
-  color: #64748B;
+  color: var(--text-secondary);
 }
 
 .rangeSelector {
   display: flex;
-  background-color: #F1F5F9;
+  background-color: var(--bg-subtle);
   padding: 4px;
   border-radius: 8px;
   gap: 4px;
@@ -76,22 +76,23 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
-  color: #64748B;
+  color: var(--text-secondary);
   border-radius: 6px;
   transition: all 0.2s ease;
   border: none;
   background: none;
+  cursor: pointer;
 }
 
 .rangeBtn:hover {
-  background-color: #E2E8F0;
-  color: #1E293B;
+  background-color: var(--border-color);
+  color: var(--text-primary);
 }
 
 .activeRange {
-  background-color: #FFFFFF;
-  color: #2F818E;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background-color: var(--bg-card);
+  color: var(--primary-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .chartContainer {
@@ -108,16 +109,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--bg-card);
+  opacity: 0.9;
   border-radius: 8px;
   font-size: 14px;
-  color: #64748B;
+  color: var(--text-secondary);
   z-index: 5;
 }
 
 .emptyChart {
-  background-color: #F8FAFC;
-  border: 1px dashed #CBD5E1;
+  background-color: var(--bg-subtle);
+  border: 1px dashed var(--border-color);
 }
 
 .cashflowInfo {
@@ -126,7 +128,7 @@
 
 .totalValue {
   font-size: 28px;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .totalValue strong {

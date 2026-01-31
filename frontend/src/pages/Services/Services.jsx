@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import SharedTable from '../../components/Common/SharedTable';
-import styles from './Services.module.css';
+import ServiceModal from './ServiceModal';
+import { Pencil, Trash2 } from 'lucide-react';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const Services = ({ category }) => {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingService, setEditingService] = useState(null);
+    const [search, setSearch] = useState('');
+    const debouncedSearch = useDebounce(search, 500);
+
+    const fetchServices = async (query = '') => {
+        setLoading(true);
+        try {
+            let url = category ? `/services?category=${category}` : '/services?category=All';
+            if (query) url += `&search=${query}`;
+            const res = await api.get(url);
+            setServices(Array.isArray(res.data) ? res.data : []);
+        } catch (err) {
+            console.error('Error fetching services:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        fetchServices();
-    }, []);
+        fetchServices(debouncedSearch);
+    }, [category, debouncedSearch]);
 
     const handleCreate = () => {
         setEditingService(null);
@@ -61,31 +81,38 @@ const Services = ({ category }) => {
             <td>₹{service.price.toLocaleString()}</td>
             <td>{service.description || '-'}</td>
             <td>
-                <button className={styles.editBtn} onClick={() => handleEdit(service)}>Edit</button>
-                <button className={styles.deleteBtn} onClick={() => handleDelete(service.id)}>Delete</button>
+                <div className={styles.actions}>
+                    <button className={styles.editBtn} onClick={() => handleEdit(service)} title="Edit Service">
+                        <Pencil size={16} />
+                    </button>
+                    <button className={styles.deleteBtn} onClick={() => handleDelete(service.id)} title="Delete Service">
+                        <Trash2 size={16} />
+                    </button>
+                </div>
             </td>
         </>
     );
 
-    if (loading) return <div>Loading Services...</div>;
-
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1>Clinic Services <span>/ Medical & Dental</span></h1>
+                <h1>{category ? `${category} Services` : 'Clinic Services'} <span>/ Speciality Care</span></h1>
                 <button className={styles.addBtn} onClick={handleCreate}>+ Add Service</button>
             </header>
 
             <SharedTable
-                title="Service Catalog"
+                title={category ? `${category} Catalog` : "Full Service Catalog"}
                 columns={columns}
                 data={services}
                 renderRow={renderRow}
+                loading={loading}
+                onSearch={setSearch}
             />
 
             {isModalOpen && (
                 <ServiceModal
                     service={editingService}
+                    defaultCategory={category}
                     onClose={() => setIsModalOpen(false)}
                     onSave={handleSave}
                 />

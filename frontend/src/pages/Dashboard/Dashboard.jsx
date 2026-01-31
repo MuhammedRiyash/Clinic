@@ -3,6 +3,7 @@ import api from '../../services/api';
 import styles from './Dashboard.module.css';
 import StatCard from '../../components/Dashboard/StatCard';
 import DoctorTable from '../../components/Doctors/DoctorTable';
+import { Package, AlertTriangle } from 'lucide-react';
 import {
     AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell
@@ -15,9 +16,12 @@ const Dashboard = () => {
     const [cashflowData, setCashflowData] = useState([]);
     const [pieData, setPieData] = useState([]);
     const [doctors, setDoctors] = useState([]);
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [range, setRange] = useState('12months');
     const [cashflowLoading, setCashflowLoading] = useState(false);
+    const [doctorSearch, setDoctorSearch] = useState('');
+    const [doctorFilter, setDoctorFilter] = useState('All');
 
     const formatCurrency = (value) => {
         if (value >= 10000000) return `₹${(value / 10000000).toFixed(1)}Cr`;
@@ -55,7 +59,9 @@ const Dashboard = () => {
                 ]);
                 setCardStats(cardsRes.data);
                 setPieData(distRes.data);
-                setDoctors(doctorsRes.data.slice(0, 5));
+                const doctorData = doctorsRes.data.slice(0, 5);
+                setDoctors(doctorData);
+                setFilteredDoctors(doctorData);
                 await fetchCashflow(range);
             } catch (err) {
                 console.error('Dashboard Error:', err);
@@ -65,6 +71,17 @@ const Dashboard = () => {
         };
         fetchInitialData();
     }, []);
+
+    useEffect(() => {
+        let result = doctors;
+        if (doctorSearch) {
+            result = result.filter(d => d.name.toLowerCase().includes(doctorSearch.toLowerCase()));
+        }
+        if (doctorFilter !== 'All') {
+            result = result.filter(d => d.specialty === doctorFilter);
+        }
+        setFilteredDoctors(result);
+    }, [doctorSearch, doctorFilter, doctors]);
 
     useEffect(() => {
         if (!loading) fetchCashflow(range);
@@ -83,6 +100,12 @@ const Dashboard = () => {
                 <StatCard title="Paid Visitors" value={cardStats?.paidVisitors || 0} trend="+5%" />
                 <StatCard title="Total Appointments" value={cardStats?.totalAppointments || 0} trend="+18%" />
                 <StatCard title="New Patients" value={cardStats?.newPatients || 0} trend="+22%" />
+                <StatCard
+                    title="Low Stock Items"
+                    value={cardStats?.lowStock || 0}
+                    color="#EF4444"
+                    icon={<Package size={24} color="#EF4444" />}
+                />
             </div>
 
             <div className={styles.chartsRow}>
@@ -125,19 +148,28 @@ const Dashboard = () => {
                                         dataKey="name"
                                         axisLine={false}
                                         tickLine={false}
-                                        tick={{ fill: '#64748B', fontSize: 12 }}
+                                        tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
                                         dy={10}
+                                        interval="preserveStartEnd"
+                                        minTickGap={10}
                                     />
                                     <YAxis
                                         axisLine={false}
                                         tickLine={false}
                                         tickFormatter={formatCurrency}
-                                        tick={{ fill: '#64748B', fontSize: 12 }}
-                                        width={60}
+                                        tick={{ fill: 'var(--text-secondary)', fontSize: 11 }}
+                                        width={70}
                                     />
                                     <Tooltip
-                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
-                                        formatter={(value) => [`₹${value.toLocaleString()}`, 'Revenue']}
+                                        contentStyle={{
+                                            borderRadius: '12px',
+                                            border: '1px solid var(--border-color)',
+                                            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                                            backgroundColor: 'var(--bg-card)',
+                                            color: 'var(--text-primary)'
+                                        }}
+                                        itemStyle={{ color: 'var(--text-primary)' }}
+                                        formatter={(value) => [formatCurrency(value), 'Revenue']}
                                     />
                                     <Area
                                         type="monotone"
@@ -182,8 +214,8 @@ const Dashboard = () => {
                         {pieData.map((item, idx) => (
                             <div key={idx} className={styles.legendItem}>
                                 <span className={styles.legendDot} style={{ backgroundColor: item.color || COLORS[idx % COLORS.length] }}></span>
-                                <span className={styles.legendName}>{item.name}</span>
-                                <span className={styles.legendVal}>{item.value}</span>
+                                <span className={styles.legendName} style={{ color: 'var(--text-primary)' }}>{item.name}</span>
+                                <span className={styles.legendVal} style={{ color: 'var(--text-secondary)' }}>{item.value}</span>
                             </div>
                         ))}
                     </div>
@@ -194,7 +226,15 @@ const Dashboard = () => {
                 <div className={styles.tableHeader}>
                     <h3>Recent Doctors</h3>
                 </div>
-                <DoctorTable doctors={doctors} onEdit={() => { }} onDelete={() => { }} onStatusToggle={() => { }} />
+                <DoctorTable
+                    doctors={filteredDoctors}
+                    onEdit={() => { }}
+                    onDelete={() => { }}
+                    onStatusToggle={() => { }}
+                    onSearch={setDoctorSearch}
+                    onFilterChange={setDoctorFilter}
+                    currentFilter={doctorFilter}
+                />
             </div>
         </div>
     );

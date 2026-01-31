@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styles from './ServiceModal.module.css';
 import { X } from 'lucide-react';
 
-const ServiceModal = ({ service, onClose, onSave }) => {
+const ServiceModal = ({ service, onClose, onSave, defaultCategory }) => {
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Medical',
+        category: defaultCategory || 'Medical',
         price: '',
         description: ''
     });
@@ -17,15 +17,13 @@ const ServiceModal = ({ service, onClose, onSave }) => {
     }, [service]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: name === 'price' ? parseFloat(value) || 0 : value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave({
-            ...formData,
-            price: parseFloat(formData.price)
-        });
+        onSave(formData);
     };
 
     return (
@@ -38,29 +36,46 @@ const ServiceModal = ({ service, onClose, onSave }) => {
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
-                        <label>Service Name</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="e.g. Blood Test" />
+                        <label>Service Name *</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            placeholder="e.g. Routine Checkup"
+                        />
                     </div>
 
-                    <div className={styles.row}>
-                        <div className={styles.inputGroup}>
-                            <label>Category</label>
-                            <select name="category" value={formData.category} onChange={handleChange}>
-                                <option value="Medical">Medical</option>
-                                <option value="Dental">Dental</option>
-                                <option value="Laboratory">Laboratory</option>
-                                <option value="Pharmacy">Pharmacy</option>
-                            </select>
-                        </div>
-                        <div className={styles.inputGroup}>
-                            <label>Base Price (₹)</label>
-                            <input type="number" name="price" value={formData.price} onChange={handleChange} required />
-                        </div>
+                    <div className={styles.inputGroup}>
+                        <label>Category *</label>
+                        <select name="category" value={formData.category} onChange={handleChange} required>
+                            <option value="Medical">Medical</option>
+                            <option value="Dental">Dental</option>
+                        </select>
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label>Price (₹) *</label>
+                        <input
+                            type="number"
+                            name="price"
+                            value={formData.price}
+                            onChange={handleChange}
+                            required
+                            placeholder="500"
+                        />
                     </div>
 
                     <div className={styles.inputGroup}>
                         <label>Description</label>
-                        <textarea name="description" value={formData.description} onChange={handleChange} rows="3"></textarea>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            rows="3"
+                            placeholder="Brief description of the service..."
+                        ></textarea>
                     </div>
 
                     <div className={styles.footer}>

@@ -2,26 +2,46 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import SharedTable from '../../components/Common/SharedTable';
 import styles from './Users.module.css';
+import { Pencil, Trash2 } from 'lucide-react';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('');
+    const [role, setRole] = useState('All');
+    const debouncedSearch = useDebounce(search, 500);
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Remove this user?')) {
+            try {
+                await api.delete(`/users/${id}`);
+                setUsers(users.filter(u => u.id !== id));
+            } catch (err) {
+                console.error('Error deleting user:', err);
+            }
+        }
+    };
+
+    const fetchUsers = async (query = '', r = 'All') => {
+        setLoading(true);
+        try {
+            let url = `/users?search=${query}`;
+            if (r && r !== 'All') url += `&role=${r}`;
+            const res = await api.get(url);
+            setUsers(res.data);
+        } catch (err) {
+            console.error('Error fetching users:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const res = await api.get('/users');
-                setUsers(res.data);
-            } catch (err) {
-                console.error('Error fetching users:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUsers();
-    }, []);
+        fetchUsers(debouncedSearch, role);
+    }, [debouncedSearch, role]);
 
-    const columns = ['Name', 'Email Address', 'Role', 'Status', 'Joined Date'];
+    const columns = ['Name', 'Email Address', 'Role', 'Status', 'Joined Date', 'Action'];
 
     const renderRow = (user) => (
         <>
@@ -37,6 +57,12 @@ const Users = () => {
             </td>
             <td><span className={styles.activeStatus}>Active</span></td>
             <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+            <td>
+                <div className={styles.actions}>
+                    <button className={styles.editBtn} title="Edit User"><Pencil size={16} /></button>
+                    <button className={styles.deleteBtn} onClick={() => handleDelete(user.id)} title="Remove User"><Trash2 size={16} /></button>
+                </div>
+            </td>
         </>
     );
 
@@ -54,6 +80,15 @@ const Users = () => {
                 columns={columns}
                 data={users}
                 renderRow={renderRow}
+                onSearch={setSearch}
+                filterOptions={[
+                    { value: 'All', label: 'All Roles' },
+                    { value: 'Admin', label: 'Admin' },
+                    { value: 'Staff', label: 'Staff' },
+                    { value: 'Doctor', label: 'Doctor' }
+                ]}
+                onFilterChange={setRole}
+                currentFilter={role}
             />
         </div>
     );

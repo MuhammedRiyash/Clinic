@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import SharedTable from '../../components/Common/SharedTable';
 import styles from './Appointments.module.css';
-
 import { useDebounce } from '../../hooks/useDebounce';
-
 import AppointmentModal from './AppointmentModal';
+import { Pencil, Trash2, CalendarClock, XCircle } from 'lucide-react';
 
 const Appointments = () => {
     const [appointments, setAppointments] = useState([]);
@@ -13,11 +12,14 @@ const Appointments = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingAppointment, setEditingAppointment] = useState(null);
     const [search, setSearch] = useState('');
+    const [status, setStatus] = useState('All');
     const debouncedSearch = useDebounce(search, 500);
 
-    const fetchAppointments = async (query = '') => {
+    const fetchAppointments = async (query = '', stat = 'All') => {
         try {
-            const res = await api.get(`/appointments?search=${query}`);
+            let url = `/appointments?search=${query}`;
+            if (stat && stat !== 'All') url += `&status=${stat}`;
+            const res = await api.get(url);
             setAppointments(res.data);
         } catch (err) {
             console.error('Error fetching appointments:', err);
@@ -27,8 +29,8 @@ const Appointments = () => {
     };
 
     useEffect(() => {
-        fetchAppointments(debouncedSearch);
-    }, [debouncedSearch]);
+        fetchAppointments(debouncedSearch, status);
+    }, [debouncedSearch, status]);
 
     const handleCreate = () => {
         setEditingAppointment(null);
@@ -81,8 +83,14 @@ const Appointments = () => {
             </td>
             <td>{apt.reason || '-'}</td>
             <td>
-                <button className={styles.editBtn} onClick={() => handleEdit(apt)}>Reschedule</button>
-                <button className={styles.deleteBtn} onClick={() => handleDelete(apt.id)}>Cancel</button>
+                <div className={styles.actions}>
+                    <button className={styles.editBtn} onClick={() => handleEdit(apt)} title="Reschedule">
+                        <CalendarClock size={16} />
+                    </button>
+                    <button className={styles.deleteBtn} onClick={() => handleDelete(apt.id)} title="Cancel Appointment">
+                        <XCircle size={16} />
+                    </button>
+                </div>
             </td>
         </>
     );
@@ -102,6 +110,14 @@ const Appointments = () => {
                 data={appointments}
                 renderRow={renderRow}
                 onSearch={setSearch}
+                filterOptions={[
+                    { value: 'All', label: 'All Status' },
+                    { value: 'Scheduled', label: 'Scheduled' },
+                    { value: 'Completed', label: 'Completed' },
+                    { value: 'Cancelled', label: 'Cancelled' }
+                ]}
+                onFilterChange={setStatus}
+                currentFilter={status}
             />
 
             {isModalOpen && (

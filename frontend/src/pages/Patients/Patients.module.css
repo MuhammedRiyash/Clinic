@@ -12,13 +12,13 @@
 .header h1 {
     font-size: 24px;
     font-weight: 700;
-    color: #1E293B;
+    color: var(--text-primary);
 }
 
 .header h1 span {
     font-size: 14px;
     font-weight: 400;
-    color: #64748B;
+    color: var(--text-secondary);
 }
 
 .addBtn {
@@ -41,4 +41,35 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.editBtn, .deleteBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+    background: var(--bg-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.deleteBtn:hover {
+    background: #FEF2F2;
+    color: #EF4444;
+    border-color: #EF4444;
 }

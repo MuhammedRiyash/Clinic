@@ -16,7 +16,6 @@ import Chats from './pages/Chats/Chats';
 import Billing from './pages/Billing/Billing';
 import Users from './pages/Users/Users';
 import DentalDashboard from './pages/DentalDashboard/DentalDashboard';
-import Settings from './pages/Settings/Settings';
 import { ThemeProvider } from './hooks/useTheme';
 
 function App() {
@@ -43,7 +42,6 @@ function App() {
                     <Route path="/dental-services" element={<Services category="Dental" />} />
                     <Route path="/billing" element={<Billing />} />
                     <Route path="/users" element={<ProtectedRoute requiredRole="Admin"><Users /></ProtectedRoute>} />
-                    <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<div style={{ padding: '20px' }}>This module is active - View under maintenance</div>} />
                   </Routes>
                 </Layout>

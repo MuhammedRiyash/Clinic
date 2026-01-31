@@ -4,8 +4,7 @@ import { Search, Bell, Settings, LogOut } from 'lucide-react';
 
 import NotificationDropdown from './NotificationDropdown';
 import { useAuth } from '../../hooks/useAuth';
-
-const Topbar = () => {
+const Topbar = ({ onSettingsClick }) => {
     const { user, logout } = useAuth();
 
     return (
@@ -17,7 +16,13 @@ const Topbar = () => {
 
             <div className={styles.actions}>
                 <NotificationDropdown />
-                <button className={styles.iconBtn}><Settings size={20} /></button>
+                <button
+                    className={styles.iconBtn}
+                    onClick={onSettingsClick}
+                    title="Settings"
+                >
+                    <Settings size={20} />
+                </button>
                 <button className={styles.iconBtn} onClick={logout} title="Logout"><LogOut size={20} /></button>
 
                 <div className={styles.userProfile}>

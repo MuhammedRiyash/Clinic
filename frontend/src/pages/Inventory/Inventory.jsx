@@ -12,12 +12,15 @@ const Inventory = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [search, setSearch] = useState('');
+    const [category, setCategory] = useState('All');
     const debouncedSearch = useDebounce(search, 500);
 
-    const fetchInventory = async (query = '') => {
+    const fetchInventory = async (query = '', cat = 'All') => {
         setLoading(true);
         try {
-            const res = await api.get(`/inventory?search=${query}`);
+            let url = `/inventory?search=${query}`;
+            if (cat && cat !== 'All') url += `&category=${cat}`;
+            const res = await api.get(url);
             setItems(res.data);
         } catch (err) {
             console.error('Error fetching inventory:', err);
@@ -27,8 +30,8 @@ const Inventory = () => {
     };
 
     useEffect(() => {
-        fetchInventory(debouncedSearch);
-    }, [debouncedSearch]);
+        fetchInventory(debouncedSearch, category);
+    }, [debouncedSearch, category]);
 
     const handleSave = async (formData) => {
         try {
@@ -95,6 +98,15 @@ const Inventory = () => {
                 renderRow={renderRow}
                 loading={loading}
                 onSearch={setSearch}
+                filterOptions={[
+                    { value: 'All', label: 'All Categories' },
+                    { value: 'Medicines', label: 'Medicines' },
+                    { value: 'Equipment', label: 'Equipment' },
+                    { value: 'Supplies', label: 'Supplies' },
+                    { value: 'Dental', label: 'Dental Supplies' }
+                ]}
+                onFilterChange={setCategory}
+                currentFilter={category}
             />
 
             {isModalOpen && (

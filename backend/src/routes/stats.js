@@ -19,11 +19,16 @@ router.get('/cards', async (req, res, next) => {
       where: { createdAt: { gte: startDate } }
     });
 
+    const lowStockCount = await prisma.inventory.count({
+      where: { quantity: { lt: 10 } }
+    });
+
     res.json({
       totalVisitors: totalPatients, // Total unique patients
       paidVisitors: paidVisitorsCount,
       totalAppointments: totalAppointments,
-      newPatients: newPatientsThisMonth
+      newPatients: newPatientsThisMonth,
+      lowStock: lowStockCount
     });
   } catch (err) {
     next(err);
@@ -73,6 +78,29 @@ router.get('/distribution', async (req, res, next) => {
     ];
 
     res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET Dental Dashboard Stats
+router.get('/dental', async (req, res, next) => {
+  try {
+    const dentalServicesCount = await prisma.service.count({ where: { category: 'Dental' } });
+    const dentalAppointments = await prisma.appointment.count({
+      where: { doctor: { specialty: { contains: 'Dentist' } } }
+    });
+    const dentalRevenue = await prisma.billing.aggregate({
+      where: { status: 'Paid' }, // Simplified: assuming some logic to distinguish dental billing
+      _sum: { amount: true }
+    });
+
+    res.json({
+      servicesCount: dentalServicesCount,
+      appointments: dentalAppointments,
+      revenue: dentalRevenue._sum.amount || 0,
+      patients: await prisma.patient.count() // Simplified for now
+    });
   } catch (err) {
     next(err);
   }

@@ -18,14 +18,25 @@ const inventorySchema = z.object({
 // GET all
 router.get('/', auth, async (req, res, next) => {
   try {
-    const { search } = req.query;
-    const items = await prisma.inventory.findMany({
-      where: search ? {
-        OR: [
-          { itemName: { contains: search } },
-          { supplier: { contains: search } }
+    const { search, category } = req.query;
+    let where = {};
+    
+    if (search || category) {
+      where = {
+        AND: [
+          search ? {
+            OR: [
+              { itemName: { contains: search, mode: 'insensitive' } },
+              { supplier: { contains: search, mode: 'insensitive' } }
+            ]
+          } : {},
+          category && category !== 'All' ? { category: category } : {}
         ]
-      } : {},
+      };
+    }
+
+    const items = await prisma.inventory.findMany({
+      where,
       orderBy: { itemName: 'asc' }
     });
     res.json(items);

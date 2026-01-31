@@ -17,15 +17,26 @@ const appointmentSchema = z.object({
 // GET all appointments with relations
 router.get('/', async (req, res, next) => {
   try {
-    const { search } = req.query;
-    const appointments = await prisma.appointment.findMany({
-      where: search ? {
-        OR: [
-          { patient: { name: { contains: search } } },
-          { doctor: { name: { contains: search } } },
-          { reason: { contains: search } }
+    const { search, status } = req.query;
+    let where = {};
+    
+    if (search || status) {
+      where = {
+        AND: [
+          search ? {
+            OR: [
+              { patient: { name: { contains: search, mode: 'insensitive' } } },
+              { doctor: { name: { contains: search, mode: 'insensitive' } } },
+              { reason: { contains: search, mode: 'insensitive' } }
+            ]
+          } : {},
+          status && status !== 'All' ? { status: status } : {}
         ]
-      } : {},
+      };
+    }
+
+    const appointments = await prisma.appointment.findMany({
+      where,
       include: {
         patient: { select: { name: true } },
         doctor: { select: { name: true } }
@@ -44,8 +55,19 @@ router.post('/', async (req, res, next) => {
     const validatedData = appointmentSchema.parse(req.body);
 
     const newAppointment = await prisma.appointment.create({
-      data: validatedData
+      data: validatedData,
+      include: { patient: { select: { name: true } } }
     });
+
+    // Trigger Notification
+    await prisma.notification.create({
+      data: {
+        title: 'New Appointment',
+        message: `Appointment scheduled for ${newAppointment.patient.name} on ${new Date(newAppointment.appointmentDate).toLocaleString()}.`,
+        type: 'info'
+      }
+    });
+
     res.status(201).json(newAppointment);
   } catch (err) {
     if (err instanceof z.ZodError) return res.status(400).json({ errors: err.errors });
