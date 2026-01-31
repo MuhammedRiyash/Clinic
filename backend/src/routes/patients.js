@@ -6,7 +6,15 @@ const prisma = new PrismaClient();
 // GET all patients
 router.get('/', async (req, res, next) => {
   try {
+    const { search } = req.query;
     const patients = await prisma.patient.findMany({
+      where: search ? {
+        OR: [
+          { name: { contains: search } },
+          { email: { contains: search } },
+          { phone: { contains: search } }
+        ]
+      } : {},
       orderBy: { createdAt: 'desc' }
     });
     res.json(patients);

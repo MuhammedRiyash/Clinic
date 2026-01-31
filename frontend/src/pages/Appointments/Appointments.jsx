@@ -3,6 +3,8 @@ import api from '../../services/api';
 import SharedTable from '../../components/Common/SharedTable';
 import styles from './Appointments.module.css';
 
+import { useDebounce } from '../../hooks/useDebounce';
+
 import AppointmentModal from './AppointmentModal';
 
 const Appointments = () => {
@@ -10,10 +12,12 @@ const Appointments = () => {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingAppointment, setEditingAppointment] = useState(null);
+    const [search, setSearch] = useState('');
+    const debouncedSearch = useDebounce(search, 500);
 
-    const fetchAppointments = async () => {
+    const fetchAppointments = async (query = '') => {
         try {
-            const res = await api.get('/appointments');
+            const res = await api.get(`/appointments?search=${query}`);
             setAppointments(res.data);
         } catch (err) {
             console.error('Error fetching appointments:', err);
@@ -23,8 +27,8 @@ const Appointments = () => {
     };
 
     useEffect(() => {
-        fetchAppointments();
-    }, []);
+        fetchAppointments(debouncedSearch);
+    }, [debouncedSearch]);
 
     const handleCreate = () => {
         setEditingAppointment(null);
@@ -97,6 +101,7 @@ const Appointments = () => {
                 columns={columns}
                 data={appointments}
                 renderRow={renderRow}
+                onSearch={setSearch}
             />
 
             {isModalOpen && (

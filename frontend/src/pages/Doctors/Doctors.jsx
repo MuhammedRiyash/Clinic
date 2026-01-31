@@ -71,6 +71,16 @@ const Doctors = () => {
         }
     };
 
+    const handleStatusToggle = async (id, currentStatus) => {
+        try {
+            const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+            await api.put(`/doctors/${id}`, { status: newStatus });
+            fetchDoctors();
+        } catch (err) {
+            console.error('Error toggling status:', err);
+        }
+    };
+
     if (loading) return <div>Loading Doctors...</div>;
 
     return (
@@ -89,7 +99,7 @@ const Doctors = () => {
                 doctors={doctors}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onStatusToggle={() => { }} // Integration logic for status toggle
+                onStatusToggle={handleStatusToggle}
             />
 
             {isModalOpen && (

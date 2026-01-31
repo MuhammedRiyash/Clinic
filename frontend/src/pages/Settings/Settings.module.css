@@ -1,0 +1,110 @@
+.container {
+    padding: 24px;
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.header h1 span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #64748B;
+}
+
+.section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #E2E8F0;
+}
+
+.section h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.section p {
+    color: #64748B;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.themeGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.themeCard {
+    background: #F8FAFC;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    color: #64748B;
+}
+
+.themeCard:hover {
+    border-color: #2F818E;
+    background: white;
+}
+
+.themeCard.active {
+    border-color: #2F818E;
+    background: #E5F6F8;
+    color: #2F818E;
+}
+
+.themeIcon {
+    padding: 12px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.themeLabel {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.check {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #2F818E;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+.infoBox {
+    background: #F8FAFC;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.infoBox p {
+    margin: 0;
+    color: #1E293B;
+}

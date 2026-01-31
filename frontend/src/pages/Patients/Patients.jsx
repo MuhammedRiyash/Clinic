@@ -4,15 +4,19 @@ import SharedTable from '../../components/Common/SharedTable';
 import PatientModal from './PatientModal';
 import styles from './Patients.module.css';
 
+import { useDebounce } from '../../hooks/useDebounce';
+
 const Patients = () => {
     const [patients, setPatients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingPatient, setEditingPatient] = useState(null);
+    const [search, setSearch] = useState('');
+    const debouncedSearch = useDebounce(search, 500);
 
-    const fetchPatients = async () => {
+    const fetchPatients = async (query = '') => {
         try {
-            const res = await api.get('/patients');
+            const res = await api.get(`/patients?search=${query}`);
             setPatients(res.data);
         } catch (err) {
             console.error('Error fetching patients:', err);
@@ -22,8 +26,8 @@ const Patients = () => {
     };
 
     useEffect(() => {
-        fetchPatients();
-    }, []);
+        fetchPatients(debouncedSearch);
+    }, [debouncedSearch]);
 
     const handleCreate = () => {
         setEditingPatient(null);
@@ -94,6 +98,7 @@ const Patients = () => {
                 columns={columns}
                 data={patients}
                 renderRow={renderRow}
+                onSearch={setSearch}
             />
 
             {isModalOpen && (

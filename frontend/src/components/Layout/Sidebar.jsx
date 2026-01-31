@@ -13,7 +13,8 @@ import {
     ShieldCheck,
     MessageSquare,
     Activity,
-    ClipboardList
+    ClipboardList,
+    Settings
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -36,6 +37,12 @@ const Sidebar = () => {
                 { name: 'Medical Services', icon: <Activity size={20} />, path: '/medical-services' },
                 { name: 'Dental Services', icon: <ClipboardList size={20} />, path: '/dental-services' },
                 { name: 'Billing and Invoice', icon: <CreditCard size={20} />, path: '/billing' },
+            ]
+        },
+        {
+            section: 'SYSTEM', items: [
+                { name: 'Settings', icon: <Settings size={20} />, path: '/settings' },
+                { name: 'Users', icon: <Users size={20} />, path: '/users' },
             ]
         }
     ];

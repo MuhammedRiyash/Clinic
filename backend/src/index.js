@@ -12,6 +12,8 @@ const billingRoutes = require('./routes/billing');
 const statsRoutes = require('./routes/stats');
 const servicesRoutes = require('./routes/services');
 const analyticsRoutes = require('./routes/analytics');
+const telemedicineRoutes = require('./routes/telemedicine');
+const notificationRoutes = require('./routes/notifications');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -43,6 +45,8 @@ app.use('/api/billing', billingRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/telemedicine', telemedicineRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health Check
 app.get('/health', (req, res) => {

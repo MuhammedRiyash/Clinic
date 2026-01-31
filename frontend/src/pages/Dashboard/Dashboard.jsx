@@ -8,6 +8,8 @@ import {
     PieChart, Pie, Cell
 } from 'recharts';
 
+const COLORS = ['#2F818E', '#3FB1C5', '#A3D9E2', '#E5F6F8'];
+
 const Dashboard = () => {
     const [cardStats, setCardStats] = useState(null);
     const [cashflowData, setCashflowData] = useState([]);

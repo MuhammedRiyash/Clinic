@@ -58,6 +58,8 @@ model Appointment {
   doctor          Doctor   @relation(fields: [doctorId], references: [id])
   appointmentDate DateTime
   status          String   @default("Scheduled") // Scheduled, Completed, Cancelled
+  type            String   @default("In-person") // In-person, Telemedicine
+  meetingLink     String?
   reason          String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -116,4 +118,13 @@ model Message {
   content    String   @db.Text
   isRead     Boolean  @default(false)
   createdAt  DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  type      String   @default("info") // info, success, warning, error
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

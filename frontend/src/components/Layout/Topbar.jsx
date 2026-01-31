@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Topbar.module.css';
 import { Search, Bell, Settings, LogOut } from 'lucide-react';
 
+import NotificationDropdown from './NotificationDropdown';
 import { useAuth } from '../../hooks/useAuth';
 
 const Topbar = () => {
@@ -15,7 +16,7 @@ const Topbar = () => {
             </div>
 
             <div className={styles.actions}>
-                <button className={styles.iconBtn}><Bell size={20} /></button>
+                <NotificationDropdown />
                 <button className={styles.iconBtn}><Settings size={20} /></button>
                 <button className={styles.iconBtn} onClick={logout} title="Logout"><LogOut size={20} /></button>
 
